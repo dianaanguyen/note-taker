@@ -1,4 +1,6 @@
-const router = require("express").Router();
+const router = require('express').Router();
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 
 router.get('/', (req,res) => {
     // get all the notes from DB
