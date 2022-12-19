@@ -39,12 +39,30 @@ const readFromFile = util.promisify(fs.readFile);
 
 router.get('/', (req,res) => {
     // get all the notes from DB
-    res.json(`GOT YOUR ${req.method} REQUEST`);
+    readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)));
+
+    console.log('THIS WILL SHOW UP IN THE LOWER CONSOLE!!!');
+    console.log(`GOT YOUR ${req.method} REQUEST`);
 });
 
 router.post('/', (req,res) => {
-    // add a note to the DB
-    res.json(`GOT YOUR ${req.method} REQUEST`);
+    console.log("TEST");
+    console.log(req.body);
+
+    const { title, text } = req.body;
+    console.log(req.body);
+
+    if (title && text) {
+        const newNote = {
+            id: uuidv4(),
+            title,
+            text,
+        };
+        readAndAppend(newNote, './db/db.json');
+    }
+    // adds note to DB
+    var notesTest = [req.body];
+    res.json(notesTest);
 });
 
 module.exports = router;
