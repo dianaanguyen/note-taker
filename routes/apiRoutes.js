@@ -40,8 +40,6 @@ const readFromFile = util.promisify(fs.readFile);
 router.get('/', (req,res) => {
     // get all the notes from DB
     readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)));
-
-    console.log('THIS WILL SHOW UP IN THE LOWER CONSOLE!!!');
     console.log(`GOT YOUR ${req.method} REQUEST`);
 });
 
@@ -64,5 +62,14 @@ router.post('/', (req,res) => {
     var notesTest = [req.body];
     res.json(notesTest);
 });
+
+router.delete('/:id', (req, res) => {
+    readFromFile("./db/db.json").then((data) => {
+    const saveData = JSON.parse(data)
+    const filteredNotes = saveData.filter(note => note.id !== req.params.id)
+    writeToFile('./db/db.json', filteredNotes) 
+        res.json(filteredNotes)
+    });
+})
 
 module.exports = router;
